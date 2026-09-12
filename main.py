@@ -18,23 +18,17 @@ products = {
     }
 }
 
-# region VARIÁVEIS BASE
+# region BASES
 
 tamanho_lista_products=len(products)
-lista_produtos=[]
 
 # endregion
 
-def gerar_lista_produtos():
-    lista_produtos=[]
-    for produtos in products.values():
-        for i, dic in enumerate(produtos.items()):
-            if i==0:
-                lista_produtos.append(dic[1])
-    return lista_produtos
+def limpar_terminal():
+    os.system("cls")
 
 def show_main_menu():
-    os.system("cls")
+    limpar_terminal()
     print("===== LOJA =====")
     print()
     print(f"\033[35m{1}\033[0m", "- Listar produtos")
@@ -49,27 +43,34 @@ def show_main_menu():
     cursor=input("Escolha uma opção: ")
     return cursor
 
+def gerar_lista_produtos():
+    lista_produtos=[]
+    for produtos in products.values():
+        for i, dic in enumerate(produtos.items()):
+            if i==0:
+                lista_produtos.append(dic[1])
+    return lista_produtos
+
 
 def no_items():
     if tamanho_lista_products==0:
-        os.system("cls")
+        limpar_terminal()
         input("A lista de produtos esta vazia...")
         return True
 
-def verificar_existencia_item():
-    ...
+def verificar_existencia_item(item):
+    if item  in lista_produtos:
+        return True
 
-
-
-def register_new_product(item):
-    ...
+# def register_new_product(item):
+#     ...
 
 def list_products():
 
     if no_items():
         return
     
-    os.system("cls")
+    limpar_terminal()
 
     for product in products:
 
@@ -89,23 +90,59 @@ def list_products():
         print("Estoque:", products[product]['estoque'])
         print("------------------------")
 
+def alterar_produto():
+    ...
+
 def register_product():
 
-    os.system("cls")
+    limpar_terminal()
 
-    id=tamanho_lista_products+1
+    id_novo_item=tamanho_lista_products+1
 
-    # products.update(
-    item={id:{
-        'nome': input("Insira o mome do item: ").capitalize(),
-        'preco': float(input("Insira o preço do item: ")),
-        'estoque': int(input("Insira a quantidade do item em estoque: "))
-        }}
+    item_novo={}
 
-    if not verificar_existencia_item():
-        products.update(item)
-    else:
-        print("")
+    item_novo.update({id_novo_item:{'nome': input("Insira o nome do item: ").capitalize(),}})
+    
+    for id, dic in item_novo.items():
+        item=dic['nome']
+
+        if item=='Q':
+            return
+
+        if len(item)==0:
+            limpar_terminal()
+            input("Campo de nome vazio.")
+            register_product()
+
+
+        if not item.replace(" ","").isalpha():
+            limpar_terminal()
+            print(item) 
+            input("Digite apenas letras.")
+            register_product()
+
+
+        exist=verificar_existencia_item(item=item)
+
+        if not exist:
+            item_novo[id_novo_item].update({
+                'preco': float(input("Insira o preço do item: ")),
+                'estoque': int(input("Insira a quantidade do item em estoque: "))
+                })
+            return products.update(item_novo)
+
+        else:
+            print("Esse produto já esta cadastrado.")
+            exit=input("... ")
+            if exit=="q":
+                return
+            register_product()
+
+
+# while True:
+#     register_product()
+#     break
+
 
 def change_product():
     ...
@@ -133,6 +170,7 @@ def report():
 
 while True:
     cursor=show_main_menu()
+    lista_produtos=gerar_lista_produtos()
 
     if cursor=="q":
         print()
@@ -153,7 +191,9 @@ while True:
         change_product()  
 
     if cursor == "4":
-        remove_product()        
+        remove_product()
+
+
 
 # print()
 
