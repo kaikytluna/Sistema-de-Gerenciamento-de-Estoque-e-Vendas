@@ -1,21 +1,3 @@
-"""
-MENU PRINCIPAL:
-
-===== LOJA =====
-
-1 - Listar produtos
-2 - Cadastrar produto
-3 - Alterar produto
-4 - Remover produto
-5 - Realizar venda
-6 - Repor estoque
-7 - Relatório
-8 - Sair
-
-Escolha uma opção:
-
-"""
-
 import os
 
 products = {
@@ -32,17 +14,24 @@ products = {
     3: {
         'nome': 'Headset',
         'preco': 200.00,
-        'estoque': 5
+        'estoque': 0
     }
 }
 
+# region VARIÁVEIS BASE
+
 tamanho_lista_products=len(products)
-product_key=products.values()
+lista_produtos=[]
 
-# for id, dic in enumerate(products.values()):
-#     print(id, dic)
-#     input("Esperando...")
+# endregion
 
+def gerar_lista_produtos():
+    lista_produtos=[]
+    for produtos in products.values():
+        for i, dic in enumerate(produtos.items()):
+            if i==0:
+                lista_produtos.append(dic[1])
+    return lista_produtos
 
 def show_main_menu():
     os.system("cls")
@@ -60,12 +49,20 @@ def show_main_menu():
     cursor=input("Escolha uma opção: ")
     return cursor
 
+
 def no_items():
-    if len(products)==0:
+    if tamanho_lista_products==0:
         os.system("cls")
         input("A lista de produtos esta vazia...")
         return True
 
+def verificar_existencia_item():
+    ...
+
+
+
+def register_new_product(item):
+    ...
 
 def list_products():
 
@@ -73,7 +70,18 @@ def list_products():
         return
     
     os.system("cls")
+
     for product in products:
+
+        #NÃO MOSTRAR ITEMS SEM ESTOQUE:
+
+        # key_item=products[product]
+
+        # if key_item['estoque']==0:
+        #     continue
+
+        #-------------------------------
+
         # print(products.keys())
         print("ID:", product)
         print("Nome:", products[product]['nome'])
@@ -81,29 +89,23 @@ def list_products():
         print("Estoque:", products[product]['estoque'])
         print("------------------------")
 
-def new_product(item):
-    
-    if item.values()['nome'] in product_key['nome']:
-        sum(product_key['estoque'], item.values()['estoque'])
-
-    products.update(item)
-
 def register_product():
 
-    if no_items():
-        return
-    
     os.system("cls")
 
-    id=len(products)+1
+    id=tamanho_lista_products+1
 
     # products.update(
-    products.update(item={id:{
+    item={id:{
         'nome': input("Insira o mome do item: ").capitalize(),
         'preco': float(input("Insira o preço do item: ")),
         'estoque': int(input("Insira a quantidade do item em estoque: "))
-    }})
+        }}
 
+    if not verificar_existencia_item():
+        products.update(item)
+    else:
+        print("")
 
 def change_product():
     ...
@@ -117,11 +119,9 @@ def remove_product():
     remove_id=(input("Insira o ID do item que deseja remover: "))
 
     if remove_id!='':
-        int(remove_id)
-        return
-    
-    if remove_id is int:
-        products.pop(remove_id)
+        remove_id_int=int(remove_id)
+        products.pop(remove_id_int)
+
 
 def make_a_sale():
     ...
