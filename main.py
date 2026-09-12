@@ -18,7 +18,7 @@ Escolha uma opção:
 
 import os
 
-produtos = {
+products = {
     1: {
         'nome': 'Teclado',
         'preco': 120.00,
@@ -36,6 +36,14 @@ produtos = {
     }
 }
 
+tamanho_lista_products=len(products)
+product_key=products.values()
+
+# for id, dic in enumerate(products.values()):
+#     print(id, dic)
+#     input("Esperando...")
+
+
 def show_main_menu():
     os.system("cls")
     print("===== LOJA =====")
@@ -47,12 +55,112 @@ def show_main_menu():
     print(f"\033[35m{5}\033[0m", "- Realizar venda")
     print(f"\033[35m{6}\033[0m", "- Repor estoque")
     print(f"\033[35m{7}\033[0m", "- Relatório")
-    print(f"\033[35m{8}\033[0m", "- Sair")
+    print(f"\033[35m{"q"}\033[0m", "- Sair")
     print()
-    input("Escolha uma opção:")
+    cursor=input("Escolha uma opção: ")
+    return cursor
+
+def no_items():
+    if len(products)==0:
+        os.system("cls")
+        input("A lista de produtos esta vazia...")
+        return True
+
+
+def list_products():
+
+    if no_items():
+        return
+    
+    os.system("cls")
+    for product in products:
+        # print(products.keys())
+        print("ID:", product)
+        print("Nome:", products[product]['nome'])
+        print("Preço:", products[product]['preco'])
+        print("Estoque:", products[product]['estoque'])
+        print("------------------------")
+
+def new_product(item):
+    
+    if item.values()['nome'] in product_key['nome']:
+        sum(product_key['estoque'], item.values()['estoque'])
+
+    products.update(item)
+
+def register_product():
+
+    if no_items():
+        return
+    
+    os.system("cls")
+
+    id=len(products)+1
+
+    # products.update(
+    products.update(item={id:{
+        'nome': input("Insira o mome do item: ").capitalize(),
+        'preco': float(input("Insira o preço do item: ")),
+        'estoque': int(input("Insira a quantidade do item em estoque: "))
+    }})
+
+
+def change_product():
+    ...
+def remove_product():
+
+    if no_items():
+        return
+    
+    list_products()
+    print()
+    remove_id=(input("Insira o ID do item que deseja remover: "))
+
+    if remove_id!='':
+        int(remove_id)
+        return
+    
+    if remove_id is int:
+        products.pop(remove_id)
+
+def make_a_sale():
+    ...
+def restock_product():
+    ...
+def report():
+    ...
+
 
 while True:
-    show_main_menu()
+    cursor=show_main_menu()
+
+    if cursor=="q":
+        print()
+        print("Fechando programa...")
+        print()
+        break
+
+    if cursor == "1":
+        list_products()   
+        print()
+        if len(products)!=0:
+            input("Deseja retornar? ")     
+
+    if cursor == "2":
+        register_product()    
+
+    if cursor == "3":
+        change_product()  
+
+    if cursor == "4":
+        remove_product()        
+
+# print()
+
+# while True:
+#     remove_product()
+#     break
+
 
 
 
