@@ -21,7 +21,7 @@ products = {
 # region BASES
 
 senha_gerente='1234'
-tamanho_lista_products=len(products)
+tamanho_lista_produtos=len(products)
 
 # endregion
 
@@ -34,7 +34,6 @@ def senha_gerencia():
 
     else:
         return False
-
 
 def limpar_terminal():
     os.system("cls")
@@ -52,7 +51,6 @@ def show_main_menu():
     print()
     cursor=input("Escolha uma opção: ")
     return cursor
-
 
 def dev_main_menu():
     limpar_terminal()
@@ -84,9 +82,8 @@ def gerar_lista_produtos():
                 lista_produtos.append(dic[1])
     return lista_produtos
 
-
 def no_items():
-    if tamanho_lista_products==0:
+    if tamanho_lista_produtos==0:
         limpar_terminal()
         input("A lista de produtos esta vazia...")
         return True
@@ -94,7 +91,8 @@ def no_items():
 def verificar_existencia_item(item):
     if item  in lista_produtos:
         return True
-
+    else:
+        return False
 
 def list_products():
 
@@ -120,14 +118,67 @@ def list_products():
         print("Estoque:", products[product]['estoque'])
         print("------------------------")
 
+
+
+
+def buscar_produto():
+    limpar_terminal()
+
+    # item=input("Insira o nome do item: ").capitalize()
+
+    # if item=="Q":
+    #     return
+
+    # exist=verificar_existencia_item(item)
+    # limpar_terminal()
+    
+    item="Headset"     #...
+    exist=True         #...
+
+    if exist==True:
+        for produto in products.values():
+            if list(produto.values())[0]==item:
+
+                for id in products.items():
+                    if id[1]==produto:
+                        print("Id:", id[0])
+                
+                print("Nome:", produto['nome'])
+                print("Preço:", produto['preco'])
+                print("Estoque:", produto['estoque'])
+                print("------------------------")
+                print()
+                print(f"\033[35m{1}\033[0m", "- Renomear")
+                print(f"\033[35m{2}\033[0m", "- Alterar Preço")
+                print(f"\033[35m{4}\033[0m", "- Repor estoque")
+                print(f"\033[35m{3}\033[0m", "- Alterar Tudo")
+                print(f"\033[35m{5}\033[0m", "- Deletar")
+                print()
+                input("O que deseja fazer com o item? ")
+
+
+
+    if exist==False:
+        input("Produto não cadastrado.")
+        buscar_produto()
+        return
+
+        # print(list(produto.values())[0])
+
+    # print("ID:", product)
+
+# while True:
+#     buscar_produto()
+#     input("...")
+
 def alterar_produto():
-    ...
+    buscar_produto()
 
 def register_product():
 
     limpar_terminal()
 
-    id_novo_item=tamanho_lista_products+1
+    id_novo_item=tamanho_lista_produtos+1
 
     item_novo={}
 
@@ -170,12 +221,6 @@ def register_product():
                 return
             register_product()
 
-
-# while True:
-#     register_product()
-#     break
-
-
 def remove_product():
 
     if no_items():
@@ -202,18 +247,20 @@ def report():
 
 
 while True:
-    cursor=show_main_menu()
+    # cursor=show_main_menu()
     lista_produtos=gerar_lista_produtos()
 
-    if cursor == "g":
+    cursor=dev_main_menu() # placeholder pra executar em modo gerencia
 
-            if senha_gerencia():
-                cursor=dev_main_menu()
+    # if cursor == "g":
 
-            else:
-                limpar_terminal()
-                input("Senha incorreta.")
-                continue
+            # if senha_gerencia():
+            #     cursor=dev_main_menu()
+
+            # else:
+            #     limpar_terminal()
+            #     input("Senha incorreta.")
+            #     continue
 
     if cursor=="q":
         print()
@@ -231,7 +278,7 @@ while True:
         register_product()    
 
     if cursor == "3":
-        change_product()  
+        alterar_produto()  
 
     if cursor == "4":
         remove_product()
