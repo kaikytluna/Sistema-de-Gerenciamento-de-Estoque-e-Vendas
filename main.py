@@ -211,6 +211,62 @@ def alterar_produto():
         alterar_produto()
         return
 
+def repor_estoque():
+    limpar_terminal()
+
+    item=input("Insira o nome do item: ").capitalize()
+
+    if item=="Q":
+        return
+
+    exist=verificar_existencia_item(item)
+    limpar_terminal()
+
+    if exist==True:
+        for produto in products.values():
+            if list(produto.values())[0]==item:
+                id_item=0
+                for id in products.items():
+                    if id[1]==produto:
+                        print("Id:", id[0])
+                        id_item=id[0]
+                        break
+                    
+
+                # preco=
+                # estoque=
+
+                
+                print("Nome:", produto['nome'])
+                print("Preço:" , produto['preco'])
+                print("Estoque:" , produto['estoque'])
+                print("------------------------")
+                print()
+
+                qnt_em_estoque=int(produto['preco'])
+                qnt_a_adiconar=int(input("Quanto quer repor ao estoque?: "))
+                qnt_nova=qnt_em_estoque+qnt_a_adiconar 
+
+                try:
+                    products.update({id_item:{'nome': produto['nome'], 
+                                            'preco' : produto['preco'],
+                                            'estoque' : qnt_nova}})
+                    print("")
+                    input("Quantidade alterada com sucesso. ")
+                    return
+                
+                except ValueError:
+                    print()
+                    input("Digite apenas numerais.")
+                    alterar_produto()
+
+
+
+    if exist==False:
+        input("Produto não cadastrado.")
+        repor_estoque()
+        return
+
 def register_product():
 
     limpar_terminal()
@@ -325,6 +381,9 @@ while True:
 
     if cursor == "k":
         input(lista_produtos)
+
+    if cursor == "6":
+        repor_estoque()
 
 
 
