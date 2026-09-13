@@ -163,40 +163,48 @@ def alterar_produto():
                 print()
                 cursor=input("O que deseja fazer com o item? ")
 
-                # id_item=1
-                if cursor=="1":
-                    products.update({id_item:{'nome':input("Insira o novo nome do item: ").capitalize(), 
-                                            'preco' : produto['preco'],
-                                            'estoque' : produto['estoque']}})
-                    print("")
-                    input("Item renomeado com sucesso. ")
-                    input(products)
-                    return
 
-                if cursor=="2":
-                    products.update({id_item:{'nome': produto['nome'], 
-                                            'preco' : float(input("Insira o novo preço do item: ")),
-                                            'estoque' : produto['estoque']}})
-                    print("")
-                    input("Preço alterado com sucesso. ")
-                    return
+                try:
+
+                    if cursor=="1":
+                        products.update({id_item:{'nome':input("Insira o novo nome do item: ").capitalize(), 
+                                                'preco' : produto['preco'],
+                                                'estoque' : produto['estoque']}})
+                        print("")
+                        input("Item renomeado com sucesso. ")
+                        input(products)
+                        return
+
+                    if cursor=="2":
+                        products.update({id_item:{'nome': produto['nome'], 
+                                                'preco' : float(input("Insira o novo preço do item: ")),
+                                                'estoque' : produto['estoque']}})
+                        print("")
+                        input("Preço alterado com sucesso. ")
+                        return
+                    
+                    if cursor=="3":
+                        products.update({id_item:{'nome': produto['nome'], 
+                                                'preco' : produto['preco'],
+                                                'estoque' : int(input("Insira a nova quantidade em estoque do item: "))}})
+                        print("")
+                        input("Quantidade alterada com sucesso. ")
+                        return
+                    
+                    if cursor=="4":
+                        products.update({id_item:{'nome':input("Insira o novo nome do item: ").capitalize(), 
+                                                'preco' : float(input("Insira o novo preço do item: ")),
+                                                'estoque' : int(input("Insira a nova quantidade em estoque do item: "))}})
+                        print("")
+                        input("Quantidade alterada com sucesso. ")
+                        return
+                    
+                except ValueError:
+                    print()
+                    input("Digite apenas numerais.")
+                    alterar_produto()
 
 
-                if cursor=="3":
-                    products.update({id_item:{'nome': produto['nome'], 
-                                            'preco' : produto['preco'],
-                                            'estoque' : int(input("Insira a nova quantidade em estoque do item: "))}})
-                    print("")
-                    input("Quantidade alterada com sucesso. ")
-                    return
-                
-                if cursor=="4":
-                    products.update({id_item:{'nome':input("Insira o novo nome do item: ").capitalize(), 
-                                            'preco' : float(input("Insira o novo preço do item: ")),
-                                            'estoque' : int(input("Insira a nova quantidade em estoque do item: "))}})
-                    print("")
-                    input("Quantidade alterada com sucesso. ")
-                    return
 
     if exist==False:
         input("Produto não cadastrado.")
@@ -305,16 +313,18 @@ while True:
 
     if cursor == "2":
         register_product()    
+        gerar_lista_produtos()
 
     if cursor == "3":
         alterar_produto()  
+        gerar_lista_produtos()
 
     if cursor == "4":
         remove_product()
+        gerar_lista_produtos()
 
     if cursor == "k":
-        gerar_lista_produtos()
-        print(lista_produtos)
+        input(lista_produtos)
 
 
 
