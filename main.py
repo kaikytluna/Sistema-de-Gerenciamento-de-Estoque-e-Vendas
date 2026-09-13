@@ -121,58 +121,87 @@ def list_products():
 
 
 
-def buscar_produto():
+def alterar_produto():
     limpar_terminal()
 
-    # item=input("Insira o nome do item: ").capitalize()
+    item=input("Insira o nome do item: ").capitalize()
 
-    # if item=="Q":
-    #     return
+    if item=="Q":
+        return
 
-    # exist=verificar_existencia_item(item)
-    # limpar_terminal()
+    exist=verificar_existencia_item(item)
+    limpar_terminal()
     
-    item="Headset"     #...
-    exist=True         #...
+    # item="Teclado"     #...
+    # exist=True         #...
 
     if exist==True:
         for produto in products.values():
             if list(produto.values())[0]==item:
-
+                id_item=0
                 for id in products.items():
                     if id[1]==produto:
                         print("Id:", id[0])
+                        id_item=id[0]
+                        break
+                    
+
+                # preco=
+                # estoque=
+
                 
                 print("Nome:", produto['nome'])
-                print("Preço:", produto['preco'])
-                print("Estoque:", produto['estoque'])
+                print("Preço:" , produto['preco'])
+                print("Estoque:" , produto['estoque'])
                 print("------------------------")
                 print()
                 print(f"\033[35m{1}\033[0m", "- Renomear")
                 print(f"\033[35m{2}\033[0m", "- Alterar Preço")
-                print(f"\033[35m{4}\033[0m", "- Repor estoque")
-                print(f"\033[35m{3}\033[0m", "- Alterar Tudo")
+                print(f"\033[35m{3}\033[0m", "- Alterar Estoque")
+                print(f"\033[35m{4}\033[0m", "- Alterar Tudo")
                 print(f"\033[35m{5}\033[0m", "- Deletar")
                 print()
-                input("O que deseja fazer com o item? ")
+                cursor=input("O que deseja fazer com o item? ")
+
+                # id_item=1
+                if cursor=="1":
+                    products.update({id_item:{'nome':input("Insira o novo nome do item: ").capitalize(), 
+                                            'preco' : produto['preco'],
+                                            'estoque' : produto['estoque']}})
+                    print("")
+                    input("Item renomeado com sucesso. ")
+                    input(products)
+                    return
+
+                if cursor=="2":
+                    products.update({id_item:{'nome': produto['nome'], 
+                                            'preco' : float(input("Insira o novo preço do item: ")),
+                                            'estoque' : produto['estoque']}})
+                    print("")
+                    input("Preço alterado com sucesso. ")
+                    return
 
 
+                if cursor=="3":
+                    products.update({id_item:{'nome': produto['nome'], 
+                                            'preco' : produto['preco'],
+                                            'estoque' : int(input("Insira a nova quantidade em estoque do item: "))}})
+                    print("")
+                    input("Quantidade alterada com sucesso. ")
+                    return
+                
+                if cursor=="4":
+                    products.update({id_item:{'nome':input("Insira o novo nome do item: ").capitalize(), 
+                                            'preco' : float(input("Insira o novo preço do item: ")),
+                                            'estoque' : int(input("Insira a nova quantidade em estoque do item: "))}})
+                    print("")
+                    input("Quantidade alterada com sucesso. ")
+                    return
 
     if exist==False:
         input("Produto não cadastrado.")
-        buscar_produto()
+        alterar_produto()
         return
-
-        # print(list(produto.values())[0])
-
-    # print("ID:", product)
-
-# while True:
-#     buscar_produto()
-#     input("...")
-
-def alterar_produto():
-    buscar_produto()
 
 def register_product():
 
@@ -282,6 +311,10 @@ while True:
 
     if cursor == "4":
         remove_product()
+
+    if cursor == "k":
+        gerar_lista_produtos()
+        print(lista_produtos)
 
 
 
