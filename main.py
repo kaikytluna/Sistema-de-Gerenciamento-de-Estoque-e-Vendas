@@ -19,7 +19,7 @@ products = {
 }
 
 # region BASES
-
+lista_vendas=[]
 senha_gerente='1234'
 tamanho_lista_produtos=len(products)
 
@@ -117,8 +117,6 @@ def list_products():
         print("Preço:", products[product]['preco'])
         print("Estoque:", products[product]['estoque'])
         print("------------------------")
-
-
 
 
 def alterar_produto():
@@ -328,11 +326,92 @@ def remove_product():
         products.pop(remove_id_int)
 
 
-def make_a_sale():
-    ...
-def restock_product():
-    ...
-def report():
+def gerar_venda():
+    lista_venda=[]
+    limpar_terminal()
+    print("===== NOVA VENDA =====")
+    print()
+    id=None
+    nome=None
+    item=input("Insira o ID ou nome do Item:")
+    qnt_item_venda=None
+    vef_int=None
+
+    try:
+        id=int(item)
+
+    except:
+        nome=item.capitalize()
+
+    if nome=="Q":
+        return
+
+    # Venda por ID
+
+    if id is not None:
+        try:
+            nome_item_venda=products[id]['nome']
+
+        except KeyError:
+            input("ID não encontrado. ")
+            gerar_venda()
+
+        while vef_int is not True:
+            qnt_item_venda=input("Insira a quantidade ser vendida: ")
+
+            if qnt_item_venda.isdigit():
+                qnt_item_venda=int(qnt_item_venda)
+                vef_int=True
+                break
+
+            if vef_int is not True:
+                print("Insira apenas numerais.")
+        venda=nome_item_venda, qnt_item_venda
+        lista_venda.append(tuple(venda))
+        saida=relatorio_venda(lista_venda)
+
+        if saida is True:
+            gerar_venda()
+
+        
+    # Venda por nome
+
+    vef=verificar_existencia_item(nome)
+
+    if vef==False:
+        print("Produto não Encontrado")
+        gerar_venda()
+
+def relatorio_venda(item):
+    lista_vendas.append(item)
+    saida=None
+
+    while saida!="N" or saida!="F":
+        limpar_terminal()
+        print("===== NOVA VENDA =====")
+        for i,l in enumerate(lista_vendas):
+            print("Produto:", l[0][0])
+            print("Quantidade:", l[0][1])
+            print()
+
+        saida=input("[N]ova venda, [F]echar : ").capitalize()
+        print()
+
+        if saida=="N":
+            return True
+
+        if saida=="F":
+            input("Venda Registrada. ")
+            return
+            # SALVAR REGISTRO DE VENDA
+
+        else:
+            input("Escolha uma das alternativas. ")
+                
+
+
+
+def relatorio():
     ...
 
 
@@ -381,6 +460,9 @@ while True:
 
     if cursor == "k":
         input(lista_produtos)
+
+    if cursor == "5":
+        gerar_venda()
 
     if cursor == "6":
         repor_estoque()
