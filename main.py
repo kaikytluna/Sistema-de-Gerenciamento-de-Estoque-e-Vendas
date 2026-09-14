@@ -325,6 +325,10 @@ def remove_product():
         remove_id_int=int(remove_id)
         products.pop(remove_id_int)
 
+def verificar_estoque(nome, qnt):
+    ...
+
+
 
 def gerar_venda():
     lista_venda=[]
@@ -332,18 +336,18 @@ def gerar_venda():
     print("===== NOVA VENDA =====")
     print()
     id=None
-    nome=None
+    nome_item=None
     item=input("Insira o ID ou nome do Item:")
     qnt_item_venda=None
     vef_int=None
-
+    saida_venda=None
     try:
         id=int(item)
 
     except:
-        nome=item.capitalize()
+        nome_item=item.capitalize()
 
-    if nome=="Q":
+    if nome_item=="Q":
         return
 
     # Venda por ID
@@ -356,31 +360,43 @@ def gerar_venda():
             input("ID não encontrado. ")
             gerar_venda()
 
-        while vef_int is not True:
+        qnt_item_venda=input("Insira a quantidade ser vendida: ")
+        
+        while qnt_item_venda.isdigit() is False:
+            print("Insira apenas numerais.")
             qnt_item_venda=input("Insira a quantidade ser vendida: ")
 
-            if qnt_item_venda.isdigit():
-                qnt_item_venda=int(qnt_item_venda)
-                vef_int=True
-                break
+        qnt_item_venda=int(qnt_item_venda)
 
-            if vef_int is not True:
-                print("Insira apenas numerais.")
-        venda=nome_item_venda, qnt_item_venda
-        lista_venda.append(tuple(venda))
+        verificar_estoque(nome_item, qnt_item_venda)
+        
+
+            
+        venda=(nome_item_venda, qnt_item_venda)
+        lista_venda.append(venda)
         saida=relatorio_venda(lista_venda)
 
-        if saida is True:
+        if saida_venda is True:
             gerar_venda()
+
+        if saida_venda is False:
+            return
 
         
     # Venda por nome
 
-    vef=verificar_existencia_item(nome)
+    vef=verificar_existencia_item(nome_item)
 
     if vef==False:
         print("Produto não Encontrado")
         gerar_venda()
+
+    if vef==True:
+        qnt_item_venda=input("Insira a quantidade ser vendida: ")
+        verificar_estoque(nome_item, qnt_item_venda)
+        venda=(nome_item, qnt_item_venda)
+        lista_venda.append(venda)
+        saida=relatorio_venda(lista_venda)
 
 def relatorio_venda(item):
     lista_vendas.append(item)
@@ -389,20 +405,21 @@ def relatorio_venda(item):
     while saida!="N" or saida!="F":
         limpar_terminal()
         print("===== NOVA VENDA =====")
+        print()
         for i,l in enumerate(lista_vendas):
             print("Produto:", l[0][0])
             print("Quantidade:", l[0][1])
             print()
 
-        saida=input("[N]ova venda, [F]echar : ").capitalize()
+        saida_venda=input("[N]ova venda, [F]echar : ").capitalize()
         print()
 
-        if saida=="N":
+        if saida_venda=="N":
             return True
 
-        if saida=="F":
+        if saida_venda=="F":
             input("Venda Registrada. ")
-            return
+            return False
             # SALVAR REGISTRO DE VENDA
 
         else:
