@@ -420,6 +420,7 @@ def gerar_venda():
         preco_item=products[id_item]['preco']
 
 
+
         if verificar_estoque(id_item, qnt_item_venda) is False:
             limpar_terminal()
             input("Sem quantidade necessária em estoque.")
@@ -431,7 +432,7 @@ def gerar_venda():
 
         venda=(nome_item_venda, qnt_item_venda, preco_item)
         lista_venda.append(venda)
-        venda_concluida=relatorio_venda(lista_venda)
+        venda_concluida=relatorio_venda(id_item, lista_venda)
 
         if venda_concluida is True:
             gerar_venda()
@@ -439,7 +440,12 @@ def gerar_venda():
         if venda_concluida is False:
             return
 
-def relatorio_venda(item):
+def remover_vendido(id, qnt):
+    qnt_em_estoque=products[id]['estoque']
+    # products.update({id : {'estoque':qnt_em_estoque-qnt}})
+    products[id]['estoque']=qnt_em_estoque-qnt
+
+def relatorio_venda(id, item):
     # lista_vendas=[]
     registro_venda=[]
     lista_vendas.append(item)
@@ -475,6 +481,7 @@ def relatorio_venda(item):
         if saida_venda=="F":
             input("Venda Registrada. ")
             salvar_venda(registro_venda, total)
+            remover_vendido(id, registro_venda[0]['quantidade'])
             return
 
         else:
@@ -484,6 +491,7 @@ def relatorio_venda(item):
 
 
 def relatorio():
+    limpar_terminal()
     for id,venda in enumerate(registro_de_vendas):
         print(f"===== VENDA {id+1} =====")
         print()
@@ -506,8 +514,7 @@ def relatorio():
         #     print("Preço dos items:", venda[id+1][0]['preco'])
         #     print()
 
-    print("fim")
-    input(".....")
+    input("...")
 
 
 # EXECUCÃO DO CÓDIGO
@@ -516,9 +523,9 @@ def relatorio():
 while True:
     # cursor=show_main_menu()
     lista_produtos=gerar_lista_produtos()
-    cursor="7"
+    # cursor="7"
 
-    # cursor=dev_main_menu() # placeholder pra executar em modo gerencia
+    cursor=dev_main_menu() # placeholder pra executar em modo gerencia
 
     # if cursor == "g":
 
