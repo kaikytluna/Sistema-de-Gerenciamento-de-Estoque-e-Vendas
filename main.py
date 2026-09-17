@@ -14,7 +14,7 @@ products = {
     3: {
         'nome': 'Headset',
         'preco': 200.00,
-        'estoque': 0
+        'estoque': 3
     }
 }
 
@@ -22,9 +22,11 @@ products = {
 lista_vendas=[]
 senha_gerente='1234'
 tamanho_lista_produtos=len(products)
-registro_de_vendas=[]
+registro_de_vendas=[{1: [{'nome': 'Mouse', 'quantidade': 2, 'preco': 160.0}, {'nome': 'Teclado', 'quantidade': 1, 'preco': 120.0}], 'total': 280.0},
+                    {2: [{'nome': 'Teclado', 'quantidade': 1, 'preco': 120.0}], 'total': 120.0}
+]
 numero_de_vendas=0
-
+registro_venda=[]
 # endregion
 
 def senha_gerencia():
@@ -337,7 +339,6 @@ def register_product():
                 break
 
 
-
         item_novo[id_novo_item].update({
             'preco': preco_item_a_adicionar,
             'estoque': estoque_item_a_adicionar
@@ -361,8 +362,11 @@ def remove_product():
         remove_id_int=int(remove_id)
         products.pop(remove_id_int)
 
-def verificar_estoque(nome, qnt):
-    ...
+def verificar_estoque(id, qnt):
+    if products[id]['estoque']>=qnt:
+        return True
+    else:
+        return False
 
 def salvar_venda(venda, total):
     numero_de_vendas=len(registro_de_vendas)+1
@@ -415,9 +419,16 @@ def gerar_venda():
 
         preco_item=products[id_item]['preco']
 
-        verificar_estoque(nome_item, qnt_item_venda)
 
-        
+        if verificar_estoque(id_item, qnt_item_venda) is False:
+            limpar_terminal()
+            input("Sem quantidade necessária em estoque.")
+            nome_item=None
+            id_item=None
+            qnt_item_venda=None
+            venda_concluida=None
+            gerar_venda()
+
         venda=(nome_item_venda, qnt_item_venda, preco_item)
         lista_venda.append(venda)
         venda_concluida=relatorio_venda(lista_venda)
@@ -429,10 +440,10 @@ def gerar_venda():
             return
 
 def relatorio_venda(item):
-    lista_vendas=[]
+    # lista_vendas=[]
+    registro_venda=[]
     lista_vendas.append(item)
     saida=None
-    registro_venda=[]
     registro_produto=[]
     
     while saida!="N" or saida!="F":
@@ -473,7 +484,30 @@ def relatorio_venda(item):
 
 
 def relatorio():
-    ...
+    for id,venda in enumerate(registro_de_vendas):
+        print(f"===== VENDA {id+1} =====")
+        print()
+        # print(list(venda.values())[0]) # = [{'nome': 'Mouse', 'quantidade': 2, 'preco': 160.0}, {'nome': 'Teclado', 'quantidade': 1, 'preco': 120.0}]
+        for i,v in enumerate(list(venda.values())[0]):
+            print("Produto:", v['nome'])
+            print("Quantidade:", v['quantidade'])
+            print("Preço dos items:", v['preco'])
+            print()
+        print("Total: ", venda['total'])
+        print()
+        print("-------------------------")
+        print()
+
+        # for vnd in venda:
+        # # # for i, l in enumerate(venda.values()):
+        # # #     print(l)
+        #     print("Produto:", venda[id+1][0]['nome'])
+        #     print("Quantidade:", venda[id+1][0]['quantidade'])
+        #     print("Preço dos items:", venda[id+1][0]['preco'])
+        #     print()
+
+    print("fim")
+    input(".....")
 
 
 # EXECUCÃO DO CÓDIGO
@@ -482,8 +516,9 @@ def relatorio():
 while True:
     # cursor=show_main_menu()
     lista_produtos=gerar_lista_produtos()
+    cursor="7"
 
-    cursor=dev_main_menu() # placeholder pra executar em modo gerencia
+    # cursor=dev_main_menu() # placeholder pra executar em modo gerencia
 
     # if cursor == "g":
 
@@ -495,7 +530,7 @@ while True:
             #     input("Senha incorreta.")
             #     continue
 
-    # cursor="5"
+
 
     if cursor=="q":
         print()
@@ -529,6 +564,9 @@ while True:
 
     if cursor == "6":
         repor_estoque()
+
+    if cursor == "7":
+        relatorio()
 
     if cursor == "r":
         limpar_terminal
