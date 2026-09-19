@@ -1,4 +1,5 @@
 import os
+import sys
 
 products = {
     1: {
@@ -543,7 +544,7 @@ while True:
         print()
         print("Fechando programa...")
         print()
-        break
+        sys.exit()
 
     if cursor == "1":
         list_products()   
